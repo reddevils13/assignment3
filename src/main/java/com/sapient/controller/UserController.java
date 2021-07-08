@@ -1,5 +1,7 @@
 package com.sapient.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,34 +15,39 @@ import com.sapient.entity.User;
 import com.sapient.interfaces.IUSerDAO;
 
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class UserController {
 	
 	@Autowired
 	IUSerDAO iud;
 	
-	@GetMapping(value="/")
+	@GetMapping(value="/api")
 	public String welcome() {
 		return "Welcome";
 	}
 	
+	@GetMapping(value="/api/show")
+	public List<User> showAll() {
+		return iud.findAll();
+	}
+	
 	@GetMapping(value="/id/{id}")
-	public User getUser(@PathVariable String id) {
+	public User getUser(@PathVariable Integer id) {
 		return iud.getById(id);
 	}
 	
-	@PostMapping(value="/insertuser")
+	@PostMapping(value="/api/insertuser")
 	public User insertUser(User user) {
 		return iud.save(user);
 	}
 	
-	@DeleteMapping(value="/deleteuser/{id}")
-	public String deleteUser(@PathVariable String id) {
+	@DeleteMapping(value="/api/deleteuser/{id}")
+	public String deleteUser(@PathVariable Integer id) {
 		iud.deleteById(id);
 		return "delete successful";
 	}
 	
-	@PutMapping(value="/update/id/{id}")
+	@PutMapping(value="/api/update/id/{id}")
 	public User updateUser(User user) {
 		return iud.save(user);
 	}
